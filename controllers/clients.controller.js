@@ -1,4 +1,5 @@
 const ClientModel = require('../models/client.model.js')
+const BalanceSheetModel = require('../models/balancesheet.model.js')
 
 const getClient = ( async (req, res) => {
     const client = await ClientModel.findByPk(req.params.id)
@@ -58,6 +59,16 @@ const deleteClient = ( async (req, res) => {
 
         if (!client) {
             return res.status(404).json()
+        }
+
+        const balancesheets = await BalanceSheetModel.findAll({
+            where: {
+                client_id: client.id
+            }
+        });
+
+        for (const balancesheet of balancesheets) {
+            await balancesheet.destroy()
         }
 
         await client.destroy()
