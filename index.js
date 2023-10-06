@@ -11,6 +11,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+// Application routes
+const clientRoutes = require('./routes/client.routes');
+app.use('/api/client', clientRoutes);
+const balancesheetRoutes = require('./routes/balancesheet.routes');
+app.use('/api/balancesheet', balancesheetRoutes)
+
 app.get('/',(request, response) => {
     response.status(200).json({ message:"Nothing to see here ;)" })
 })
